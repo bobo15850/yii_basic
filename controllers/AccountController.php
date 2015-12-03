@@ -4,6 +4,7 @@ use yii\web\Controller;
 
 class AccountController extends Controller
 {
+	public $layout="frame";	
 	public function actionIndex(){
 		return $this->render('index');
 	}
@@ -12,7 +13,7 @@ class AccountController extends Controller
 	}//注册
 
 	public function actionLogin(){
-		
+
 	}//登陆
 
 	public function actionLogout(){
