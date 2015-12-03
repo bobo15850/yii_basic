@@ -4,12 +4,15 @@ use yii\web\Controller;
 
 class AccountController extends Controller
 {
+	public function actionIndex(){
+		return $this->render('index');
+	}
 	public function actionSignUp(){
-
+		echo "signup";
 	}//注册
 
 	public function actionLogin(){
-
+		
 	}//登陆
 
 	public function actionLogout(){
