@@ -4,6 +4,10 @@ use yii\web\Controller;
 
 class ActivityController extends Controller
 {
+	public function actionIndex(){
+		return $this->render('index');
+	}//跳转到活动主页
+
 	public function actionAddActivity(){
 
 	}//添加活动

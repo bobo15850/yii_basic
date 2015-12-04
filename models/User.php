@@ -2,102 +2,73 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property integer $userid
+ * @property string $username
+ * @property string $password
+ * @property string $icon
+ * @property string $phonenumber
+ * @property string $identity
+ */
+class User extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
+        return [
+            [['userid', 'username', 'password', 'icon', 'phonenumber', 'identity'], 'required'],
+            [['userid'], 'integer'],
+            [['username'], 'string', 'max' => 32],
+            [['password', 'icon'], 'string', 'max' => 128],
+            [['phonenumber'], 'string', 'max' => 16],
+            [['identity'], 'string', 'max' => 1]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'userid' => 'Userid',
+            'username' => 'Username',
+            'password' => 'Password',
+            'icon' => 'Icon',
+            'phonenumber' => 'Phonenumber',
+            'identity' => 'Identity',
+        ];
+    }
+
+    public static function findUserById($uid){
+        if(!is_numeric($uid)){
+            return null;
+        }else{
+            $user=self::findOne($uid);
+            return $user;
         }
+    }//通过编号查找用户
 
-        return null;
-    }
+    public static function findUserByPhone($phonenumber){
+        $user=User::find()->where(['phonenumber' => $phonenumber])->one();
+        return $user;
+    }//通过电话查找用户
 
-    /**
-     * Finds user by username
-     *
-     * @param  string      $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param  string  $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+    public function getPassword(){
+        return $this->password;
     }
 }

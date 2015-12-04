@@ -4,6 +4,10 @@ use yii\web\Controller;
 
 class BlogController extends Controller
 {
+	public function actionIndex(){
+		echo "blog index";
+	}//博文主页
+
 	public function actionAddBlog(){
 
 	}//发表博文
