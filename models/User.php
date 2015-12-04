@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "user".
  *
- * @property integer $userid
+ * @property integer $id
  * @property string $username
  * @property string $password
  * @property string $icon
@@ -30,8 +30,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'username', 'password', 'icon', 'phonenumber', 'identity'], 'required'],
-            [['userid'], 'integer'],
+            [['id', 'username', 'password', 'icon', 'phonenumber', 'identity'], 'required'],
+            [['id'], 'integer'],
             [['username'], 'string', 'max' => 32],
             [['password', 'icon'], 'string', 'max' => 128],
             [['phonenumber'], 'string', 'max' => 16],
@@ -45,7 +45,7 @@ class User extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'userid' => 'Userid',
+            'id' => 'id',
             'username' => 'Username',
             'password' => 'Password',
             'icon' => 'Icon',
@@ -68,9 +68,21 @@ class User extends \yii\db\ActiveRecord
         return $user;
     }//通过电话查找用户
 
-    public static function getNewUserId(){
-        $sql="select * from user order by userid desc limit 1";
+    public static function getNewId(){
+        $sql="select * from user order by id desc limit 1";
         $user=self::findBySql($sql)->one();
-        return $user['userid']+1;
+        return $user['id']+1;
     }//返回新注册用户的id
+
+    public static function findActivityAttendUsers($activityId){
+        $sql = "select * from user where user.id in (select attendActivity.userId from attendActivity where activityId = ".$activityId.")";
+        $users=self::findBySql($sql)->all();
+        return $users;
+    }//查询参加了某个活动的用户
+
+    public function isAttendActivity($activityId){
+        $sql="select * from attendActivity where activityId = ".$activityId." and userId = ".$this->id;
+        $counter=self::findBySql($sql)->count();
+        return $counter==1;
+    }//判断某用户是否参加了某个活动
 }

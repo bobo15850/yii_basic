@@ -1,12 +1,25 @@
 <?php
 namespace app\controllers;
+
+use yii;
 use yii\web\Controller;
+use app\models\Activity;
+use app\models\User;
 
 class ActivityController extends Controller
 {
 	public function actionIndex(){
-		return $this->render('index');
+		$activities=Activity::getInitActivities();
+		return $this->render('index',['activities' => $activities]);
 	}//跳转到活动主页
+
+	public function actionViewActivity(){
+		$request = yii::$app->request;
+		$activityId = $request->get('activityId');
+		$activity = Activity::findActivityById($activityId);
+		$attendUsers = User::findActivityAttendUsers($activityId);
+		return $this->render("oneActivity",['activity' => $activity,'attendUsers' => $attendUsers]);
+	}//查看活动详情
 
 	public function actionAddActivity(){
 
@@ -19,10 +32,6 @@ class ActivityController extends Controller
 	public function actionSelectActivity(){
 
 	}//筛选活动
-
-	public function actionViewActivityDetail(){
-
-	}//查看活动详情
 
 	public function actionJoinActivity(){
 

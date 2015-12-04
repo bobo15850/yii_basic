@@ -48,9 +48,9 @@ class AccountController extends Controller
 	public function actionSignUp(){
 		$request=yii::$app->request;
 		$user = new User();
-		$userid = User::getNewUserId();//得到新的用户编号
+		$userId = User::getNewUserId();//得到新的用户编号
 		//设置数据库里的每一位，验证放在前端js中
-		$user['userid'] = $userid;
+		$user['id'] = $userId;
 		$user['phonenumber'] = $request->post('phonenumber');
 		$user['username'] = $request->post('username');
 		$user['password'] = $request->post('password');

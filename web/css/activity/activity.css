@@ -1,0 +1,71 @@
+@CHARSET "UTF-8";
+/*表示活动筛选的板块*/
+#main_body {
+	
+}
+
+#activity_selection {
+	padding: 2%;
+	/*padding-left: 60px;*/
+	/*background-color: rgb(235, 235, 235);*/
+}
+
+/*删选条件*/
+.option_name {
+	font-size: large;
+	font-weight: bold;
+}
+
+.selection_bar {
+	margin-bottom: 1%;
+}
+/*删选结果列表*/
+.activity_list {
+	list-style-type: none;
+	float: left;
+	padding-left: 0px;
+}
+
+.one_activity {
+	width: 260px;
+	height: 300px;
+	margin: 10px;
+	float: left;
+	background-color: rgb(220, 220, 220);
+}
+
+.one_activity:hover {
+	background-color: rgb(200, 200, 200);
+}
+
+.one_activity a {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.one_activity a img {
+	margin-left: 25%;
+	width: 50%;
+	height: 120px;
+	padding-top: 5px;
+}
+
+.one_activity div {
+	width: 100%;
+	padding-top: 15px;
+}
+
+.one_activity div span {
+	width: 100px;
+	height: 32px;
+	padding-left: 40px;
+	font-size: large;
+}
+
+.one_activity div label {
+	width: 160px;
+	height: 32px;
+	padding-left: 40px;
+	font-size: large;
+	font-weight: bolder;
+}
