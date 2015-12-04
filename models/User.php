@@ -56,7 +56,7 @@ class User extends \yii\db\ActiveRecord
 
     public static function findUserById($uid){
         if(!is_numeric($uid)){
-            return null;
+            return array();
         }else{
             $user=self::findOne($uid);
             return $user;
@@ -64,11 +64,13 @@ class User extends \yii\db\ActiveRecord
     }//通过编号查找用户
 
     public static function findUserByPhone($phonenumber){
-        $user=User::find()->where(['phonenumber' => $phonenumber])->one();
+        $user=self::findOne(['phonenumber' => $phonenumber]);
         return $user;
     }//通过电话查找用户
 
-    public function getPassword(){
-        return $this->password;
-    }
+    public static function getNewUserId(){
+        $sql="select * from user order by userid desc limit 1";
+        $user=self::findBySql($sql)->one();
+        return $user['userid']+1;
+    }//返回新注册用户的id
 }

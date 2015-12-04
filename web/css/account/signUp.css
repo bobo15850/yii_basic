@@ -1,0 +1,27 @@
+.form-signUp {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-signUp-heading{
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.form-signUp .form-control {
+  position: relative;
+  height: auto;
+  padding: 10px;
+  margin-bottom: -1px;
+  font-size: 16px;
+}
+
+.form-signUp button{
+	margin-top: 20px; 
+}
+
+.has-account{
+    text-align: center;
+    font-size: small;
+}

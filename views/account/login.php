@@ -1,3 +1,6 @@
+<?php 
+	$this->registerCssFile('@web/css/account/login.css');
+?>
 <div class="container">
 	<form class="form-login" action="index.php?r=account/index" method="post">
 		<h2 class="form-login-heading">请登录</h2>
@@ -17,6 +20,6 @@
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 	</form>
 	<div class="no-account">
-		<label>没有账号<a href="index.php?r=account/sign-up">==>立即注册</a></label>
+		<label>没有账号<a href="index.php?r=account/to-sign">==>立即注册</a></label>
 	</div>
 </div>
