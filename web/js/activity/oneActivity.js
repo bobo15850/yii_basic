@@ -18,14 +18,25 @@ function joinOrQuitActivity(activityId){
 	}
 }//参加活动和退出活动，二者共用一个按钮
 
-function modifyActivity(){
-	alert("修改活动");
+function modifyActivity(activityId){
+	window.location.href="index.php?r=activity/to-modify&activityId="+activityId;
 }//修改活动
 
-function deleteActivity(){
-	alert("删除活动");
+function deleteActivity(activityId){
+	var r=confirm("是否删除该活动，此操作不可恢复");
+	if (r==true){
+		$.post("index.php?r=activity/delete-activity",{'activityId':activityId},function(data){
+			if(data){
+				window.location.href="index.php?r=account/index";
+			}
+		});		
+	}
 }//删除活动
 
 function check_release(){
 	return true;
 }//检验活动发布表单
+
+function check_modify(){
+	return true;
+}//检验活动修改表单,只能修改人数，而且只能扩大人数

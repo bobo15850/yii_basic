@@ -62,11 +62,32 @@ class ActivityController extends Controller
 	}//退出活动
 
 	public function actionDeleteActivity(){
-		
+		$request = yii::$app->request;
+		$session = yii::$app->session;
+		$activityId = $request->post('activityId');
+		$activity = Activity::findActivityById($activityId);
+		if(!empty($activity)){
+			AttendActivity::deleteAll('activityId = :activityId',[':activityId'=>$activityId]);
+			$activity->delete();
+			return true;				
+		}
 	}//删除活动
 
-	public function actionModifyActivity(){
+	public function actionToModify(){
+		$request = yii::$app->request;
+		$activityId = $request->get('activityId');
+		$activity = Activity::findActivityById($activityId);
+		return $this->render("modifyActivity",['activity'=>$activity]);	
+	}//跳转到修改页面
 
+	public function actionModifyActivity(){
+		$request = yii::$app->request;
+		$activityId = $request->post('activityId');
+		$activity = Activity::findActivityById($activityId);
+		$activity['peoplenum'] = intval($request->post('peoplenum'));
+		$activity->save();
+		$attendUsers = User::findActivityAttendUsers($activityId);
+		return $this->render("oneActivity",['activity' => $activity,'attendUsers' => $attendUsers]);
 	}//修改活动
 
 	public function actionSelectActivity(){

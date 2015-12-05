@@ -20,8 +20,8 @@ $this->registerCssFile('@web/css/activity/oneActivity.css');
 			if(isset($session['user'])){
 				$thisuser = $session['user'];//登陆用户
 				if($thisuser['id']==$activity['beginerId']){
-					echo "<button class='btn btn-lg btn-primary btn-block' type='button' onClick='modifyActivity()'>修改活动</button>";
-					echo "<button class='btn btn-lg btn-primary btn-block' type='button' onClick='deleteActivity()'>删除活动</button>";
+					echo "<button class='btn btn-lg btn-primary btn-block' type='button' onClick='modifyActivity(".$activity['id'].")'>修改活动</button>";
+					echo "<button class='btn btn-lg btn-danger btn-block' type='button' onClick='deleteActivity(".$activity['id'].")'>删除活动</button>";
 				}//本人发起的活动，添加两个权限
 				if($thisuser->isAttendActivity($activity['id'])){
 					echo "<input class='btn btn-lg btn-default btn-block' id='join_quit' type='button' value='退出活动' onClick='joinOrQuitActivity(".$activity['id'].")'>";
