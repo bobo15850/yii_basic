@@ -2,6 +2,7 @@
 namespace app\controllers;
 use yii\web\Controller;
 use app\models\User;
+use app\models\HealthState;
 use yii;
 
 class AccountController extends Controller
@@ -22,14 +23,16 @@ class AccountController extends Controller
 				if(strcmp($user['password'],$password)==0){
 					$session->open();//打开session
 					$session['user']=$user;//设置session中的用户编号,之前用户尚未登陆
-					return $this->render("index",['user'=>$user]);
+					$nowHealth = HealthState::getUserLatestState($user->id);
+					return $this->render("index",['nowHealth'=>$nowHealth]);
 				}//密码正确
 				else{
 					return $this->render('login',['isError'=> 1]);
 				}//密码错误
 			}
 		}else{
-			return $this->render('index',['user' => $session['user']]);//渲染模板
+			$nowHealth = HealthState::getUserLatestState($session['user']->id);
+			return $this->render("index",['nowHealth'=>$nowHealth]);//渲染模板
 		}
 	}//展示个人主页,登陆或者点击个人主页
 
@@ -73,10 +76,34 @@ class AccountController extends Controller
 		}
 	}//检测手机号是否被注册过
 
+	public function actionSetNowHealth(){
+		$request = yii::$app->request;
+		$session = yii::$app->session;
+		$nowHealth = new HealthState();
+		$nowHealth['userId'] = $session['user']->id;
+		$nowHealth['date'] = date("Y-m-d");
+		$nowHealth['height'] = floatval($request->post('heightInput'));
+		$nowHealth['weight'] = floatval($request->post('weightInput'));
+		$nowHealth['sleep'] = floatval($request->post('sleepInput'));
+		$nowHealth['step'] = intval($request->post('stepInput'));
+		$beforeHealth = HealthState::getUserLatestState($session['user']->id);
+		if($beforeHealth['date']==$nowHealth['date']){//判断是否为当天更新
+			$beforeHealth['step'] = $nowHealth['step'];
+			$beforeHealth['height'] = $nowHealth['height'];
+			$beforeHealth['weight'] = $nowHealth['weight'];
+			$beforeHealth['sleep'] = $nowHealth['sleep'];
+			$beforeHealth->update();
+		}//是当天更新
+		else{
+			$nowHealth->save();
+		}//不是当天更新
+		$nowHealth = HealthState::getUserLatestState($session['user']->id);
+		return $this->render("index",['nowHealth'=>$nowHealth]);//渲染模板
+	}//设置当前健康状态
+
 	public function actionFindPassword(){
 		return $this->render("findPassword");
 	}//找回密码
-
 
 	public function actionResetAccount(){
 

@@ -1,0 +1,54 @@
+body {
+	background-color: rgb(235, 235, 235);
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+.my_info {
+	height: 220px;
+	text-align: center;
+	padding-top: 20px;
+}
+
+.portrait {
+	text-align: center;
+}
+
+.sidenav {
+	padding: 20px;
+}
+
+.sidenav button {
+	font-weight: bolder;
+	font-size: large;
+}
+
+.sidenav button:hover {
+	background-color: rgb(220, 220, 220);
+}
+
+.content {
+	padding: 20px;
+}
+
+.health_state_bar {
+	
+}
+
+.health_state_content {
+	padding: 20px;
+}
+
+.ecercise_bar {
+	
+}
+
+.exercise_content {
+	padding: 20px;
+}

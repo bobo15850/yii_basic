@@ -4,9 +4,6 @@ use yii\web\Controller;
 
 class HealthController extends Controller
 {
-	public function actionGetNowState(){
-
-	}//得到当前身体健朗情况
 
 	public function actionGetHealthStateByTime(){
 
