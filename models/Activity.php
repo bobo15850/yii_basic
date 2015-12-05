@@ -50,30 +50,36 @@ class Activity extends \yii\db\ActiveRecord
     }
 
     public static function getInitActivities(){
-    	$today=date('Y-m-d');//当前时间
-    	$sql="select * from activity where startdate > ".$today." order by startdate limit 20";
-    	$activities=self::findBySql($sql)->all();
-    	return $activities;
+        $today=date('Y-m-d');//当前时间
+        $sql="select * from activity where startdate > ".$today." order by startdate limit 20";
+        $activities=self::findBySql($sql)->all();
+        return $activities;
     }//得到初始化活动管理界面所需要的活动，返回最近开始的20个活动
 
     public function getTimeLong(){
-    	$sd = strtotime($this->startdate);//开始时间戳
-    	$fd = strtotime($this->finishdate);//结束时间戳
-    	return ceil(($fd-$sd)/86400);//86400表示一天的秒数
+        $sd = strtotime($this->startdate);//开始时间戳
+        $fd = strtotime($this->finishdate);//结束时间戳
+        return ceil(($fd-$sd)/86400);//86400表示一天的秒数
     }//得到活动周期
 
     public function getAttendNum(){
-    	$sql="select * from attendActivity where activityId = ".$this->id;
-    	$num=self::findBySql($sql)->count();
-    	return $num;
+        $sql="select * from attendActivity where activityId = ".$this->id;
+        $num=self::findBySql($sql)->count();
+        return $num;
     }//得到当前参加人数
 
     public static function findActivityById($id){
-    	if(!is_numeric($id)){
+        if(!is_numeric($id)){
             return array();
         }else{
             $activity=self::findOne($id);
             return $activity;
         }
     }//根据编号得到活动
+
+    public static function getNewActivityId(){
+        $sql="select * from activity order by id desc limit 1";
+        $activity=self::findBySql($sql)->one();
+        return $activity['id']+1;
+    }//得到新添加的活动编号
 }

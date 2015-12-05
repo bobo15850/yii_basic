@@ -30,8 +30,7 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'username', 'password', 'icon', 'phonenumber', 'identity'], 'required'],
-            [['id'], 'integer'],
+            [['username', 'password', 'icon', 'phonenumber', 'identity'], 'required'],
             [['username'], 'string', 'max' => 32],
             [['password', 'icon'], 'string', 'max' => 128],
             [['phonenumber'], 'string', 'max' => 16],
@@ -45,7 +44,7 @@ class User extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'id',
+            'id' => 'ID',
             'username' => 'Username',
             'password' => 'Password',
             'icon' => 'Icon',

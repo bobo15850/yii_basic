@@ -6,8 +6,6 @@ use yii;
 
 class AccountController extends Controller
 {	
-	public $enableCsrfValidation = false;
-
 	public function actionIndex(){
 		$request=yii::$app->request;
 		$session=yii::$app->session;
