@@ -4,6 +4,10 @@ use yii\web\Controller;
 
 class FriendController extends Controller
 {
+	public function actionIndex(){
+		return $this->render("index");
+	}
+
 	public function actionAddFriend(){
 
 	}//请求加好友

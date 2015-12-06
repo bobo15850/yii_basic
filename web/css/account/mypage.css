@@ -11,7 +11,7 @@ body {
 }
 
 .my_info {
-	height: 220px;
+	height: 210px;
 	text-align: center;
 	padding-top: 20px;
 }
@@ -51,4 +51,16 @@ body {
 
 .exercise_content {
 	padding: 20px;
+}
+
+#container {
+	background: rgb(240,240,240);
+	width:800px;
+	height:500px;
+}
+
+path{
+	fill:none;
+	stroke:#4B4948;
+	stroke-width:2;
 }

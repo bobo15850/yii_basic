@@ -39,8 +39,8 @@ AppAsset::register($this);//注册css和js文件，与后面的$this->head()配�
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php?r=activity/index">活动广场</a></li>
-                    <li><a href="#">朋友圈</a></li>
-                    <li><a href="#">博文分享</a></li>
+                    <li><a href="index.php?r=advice/index">建议中心</a></li>
+                    <li><a href="index.php?r=friend/index">朋友圈</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php
@@ -49,7 +49,7 @@ AppAsset::register($this);//注册css和js文件，与后面的$this->head()配�
                         echo "<li><a href='index.php?r=account/login'>登陆</a></li>";
                     }//未登录状态
                     else {
-                        echo "<li><a href='index.php?r=account/index'>";
+                        echo "<li><a id='frame_user_bar' href='index.php?r=account/index'>";
                         $user=$session['user'];
                         echo $user['username'];
                         echo "</a></li>";

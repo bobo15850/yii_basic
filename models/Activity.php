@@ -82,4 +82,16 @@ class Activity extends \yii\db\ActiveRecord
         $activity=self::findBySql($sql)->one();
         return $activity['id']+1;
     }//得到新添加的活动编号
+
+    public static function getUserActivities($userId){
+        $sql="select * from activity where id in (select activityId from attendActivity where userId = ".$userId.")";
+        $activities = self::findBySql($sql)->all();
+        return $activities;
+    }//得到用户参加的活动
+
+    public static function getUserReleaseActivity($userId){
+        $sql="select * from activity where beginerId = ".$userId;
+        $activities = self::findBySql($sql)->all();
+        return $activities;
+    }//得到用户发布的活动
 }

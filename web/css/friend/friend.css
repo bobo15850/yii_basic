@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+.friendswords_list {
+	list-style-type: none;
+	float: left;
+	background-color: rgb(235, 235, 235);
+}
+
+.one_friendswords {
+	width: 280px;
+	height: 400px;
+	margin: 5px;
+	float: left;
+	padding: 10px;
+	background-color: rgb(220, 220, 220);
+}
+
+.one_friendswords:hover {
+	background-color: rgb(190, 190, 190);
+}
+
+.friendsInfo {
+	width: 260px;
+	height: 60px;
+	text-align: left;
+}
+
+.friendsPortrait {
+	display: inline;
+}
+
+.words_content {
+	padding-top: 10px;
+}
+
+.words_content_pic {
+	width: 260px;
+	height: 200px;
+	background-color: rgb(160, 160, 160);
+}
+
+.operation_words {
+	padding-top: 20px;
+	text-align: center;
+}
+
+.give_thumbs_up {
+	width: 30%;
+}
+
+.comment_on_words {
+	width: 30%;
+}
+
+.show_all_words {
+	width: 30%;
+}

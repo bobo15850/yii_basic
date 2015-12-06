@@ -41,7 +41,7 @@ $this->registerCssFile('@web/css/activity/oneActivity.css');
 			if(!empty($attendUsers)){
 			for($i=0;$i<count($attendUsers);$i++){
 				$tempUser=$attendUsers[$i];
-				echo $tempUser['username']."<br/>";
+				echo "<h3><a href='index.php?r=account/view-user&userId=".$tempUser['id']."'>".$tempUser['username']."</a></h3>";
 			}
 			}else{
 				echo "没有其他用户参加<br/>";

@@ -13,7 +13,7 @@ class AccountController extends Controller
 		if(!isset($session['user'])){
 			//得到登陆信息
 			$phonenumber=$request->post('phonenumber');
-			$password=$request->post('password');
+			$password=md5($request->post('password'));
 			//得到数据库信息
 			$user=User::findUserByPhone($phonenumber);//返回一维数组
 			if (empty($user)) {
@@ -23,16 +23,14 @@ class AccountController extends Controller
 				if(strcmp($user['password'],$password)==0){
 					$session->open();//打开session
 					$session['user']=$user;//设置session中的用户编号,之前用户尚未登陆
-					$nowHealth = HealthState::getUserLatestState($user->id);
-					return $this->render("index",['nowHealth'=>$nowHealth]);
+					return $this->render("index");
 				}//密码正确
 				else{
 					return $this->render('login',['isError'=> 1]);
 				}//密码错误
 			}
 		}else{
-			$nowHealth = HealthState::getUserLatestState($session['user']->id);
-			return $this->render("index",['nowHealth'=>$nowHealth]);//渲染模板
+			return $this->render("index");//渲染模板
 		}
 	}//展示个人主页,登陆或者点击个人主页
 
@@ -49,12 +47,10 @@ class AccountController extends Controller
 	public function actionSignUp(){
 		$request=yii::$app->request;
 		$user = new User();
-		$userId = User::getNewUserId();//得到新的用户编号
 		//设置数据库里的每一位，验证放在前端js中
-		$user['id'] = $userId;
 		$user['phonenumber'] = $request->post('phonenumber');
 		$user['username'] = $request->post('username');
-		$user['password'] = $request->post('password');
+		$user['password'] = md5($request->post('password'));
 		$user['icon'] = "icon";//设置默认的头像，可以修改
 		$user['identity'] = 'a';//设置默认的身份，可以升级
 		$user->save();
@@ -79,38 +75,67 @@ class AccountController extends Controller
 	public function actionSetNowHealth(){
 		$request = yii::$app->request;
 		$session = yii::$app->session;
-		$nowHealth = new HealthState();
-		$nowHealth['userId'] = $session['user']->id;
-		$nowHealth['date'] = date("Y-m-d");
-		$nowHealth['height'] = floatval($request->post('heightInput'));
-		$nowHealth['weight'] = floatval($request->post('weightInput'));
-		$nowHealth['sleep'] = floatval($request->post('sleepInput'));
-		$nowHealth['step'] = intval($request->post('stepInput'));
-		$beforeHealth = HealthState::getUserLatestState($session['user']->id);
-		if($beforeHealth['date']==$nowHealth['date']){//判断是否为当天更新
-			$beforeHealth['step'] = $nowHealth['step'];
-			$beforeHealth['height'] = $nowHealth['height'];
-			$beforeHealth['weight'] = $nowHealth['weight'];
-			$beforeHealth['sleep'] = $nowHealth['sleep'];
-			$beforeHealth->update();
-		}//是当天更新
+		$oldHealth = HealthState::getUserLatestHealth($session['user']->id);
+		$isNewDay = 0;
+		if(!($oldHealth['date']==date("Y-m-d"))){
+			$isNewDay = 1;
+			$oldHealth = new HealthState();
+			$oldHealth['date'] = date('Y-m-d');
+			$oldHealth['userId'] = $session['user']->id;
+		}//是新的一天
+		$oldHealth['height'] = floatval($request->post('heightInput'));
+		$oldHealth['weight'] = floatval($request->post('weightInput'));
+		$oldHealth['sleep'] = floatval($request->post('sleepInput'));
+		$oldHealth['highblood'] = intval($request->post('highbloodInput'));
+		$oldHealth['lowblood'] = intval($request->post('lowbloodInput'));
+		$oldHealth['heartbeat'] = intval($request->post('heartbeatInput'));
+		$oldHealth['step'] = intval($request->post('stepInput'));
+		if($isNewDay){
+			$oldHealth->save();
+		}
 		else{
-			$nowHealth->save();
-		}//不是当天更新
-		$nowHealth = HealthState::getUserLatestState($session['user']->id);
-		return $this->render("index",['nowHealth'=>$nowHealth]);//渲染模板
+			$oldHealth->update();
+		}
+		return $this->render("index");//渲染模板
 	}//设置当前健康状态
 
 	public function actionFindPassword(){
 		return $this->render("findPassword");
 	}//找回密码
 
-	public function actionResetAccount(){
+	public function actionSetUsername(){
+		$request = yii::$app->request;
+		$session = yii::$app->session;
+		$username = $request->post('username');
+		$user = User::findOne($session['user']->id);
+		if(!empty($user)){
+			$user['username'] = $username;
+			$user->update();
+			unset($session['user']);
+			$session['user'] = $user;
+		}
+		return true;
+	}//设置用户名
 
-	}//账户设置
+	public function actionSetPassword(){
+		$request = yii::$app->request;
+		$session = yii::$app->session;
+		$user = User::findOne($session['user']->id);
+		if($user['password']==md5($request->post('oldPassword'))){
+			$user['password'] = md5($request->post('newPassword'));
+			$user->update();
+			unset($session['user']);
+			$session['user'] = $user;
+			return true;
+		}
+		else{
+			return false;
+		}
+	}//设置密码
 
-	public function actionDeleteAccount(){
-
-	}//注销账户
+	public function actionViewUser(){
+		$request = yii::$app->request;
+		return $this->render("viewUser",['otherUserId'=>$request->get('userId')]);
+	}
 }
 ?>
